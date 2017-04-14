@@ -1,1 +1,1 @@
-./dlc -e bits.c && make > /dev/null && ./btest
+./driver.pl

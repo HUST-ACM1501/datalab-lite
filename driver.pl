@@ -16,10 +16,9 @@ use strict 'vars';
 use Getopt::Std;
 
 use lib ".";
-use Driverlib;
 
 # Set to 1 to use btest, 0 to use the BDD checker.
-my $USE_BTEST = 1;
+my $USE_BTEST = 0;
 
 # Generic settings 
 $| = 1;      # Flush stdout each time
@@ -92,30 +91,6 @@ if ($opt_h) {
 
 # The default input file is bits.c (change with -f)
 $infile = "bits.c";
-$nickname = "";
-
-#####
-# These are command line args that every driver must support
-#
-
-# Causes the driver to send an autoresult to the server on behalf of user
-if ($opt_u) {
-    $nickname = $opt_u;
-	check_nickname($nickname);
-}
-
-# Hidden flag that indicates that the driver was invoked by an autograder
-if ($opt_A) {
-    $autograded = $opt_A;
-}
-
-#####
-# Drivers can also define an arbitary number of other command line args
-#
-# Optional hidden flag used by the autograder
-if ($opt_f) {  
-    $infile = $opt_f;
-}
 
 use strict 'vars';
 
@@ -374,61 +349,7 @@ $trating = $total_c_rating + $total_p_rating;
 
 print "\nScore = $tpoints/$trating [$total_c_points/$total_c_rating Corr + $total_p_points/$total_p_rating Perf] ($tops total operators)\n";
 
-#
-# Optionally send the autoresult to the contest server if the driver
-# was called with the -u command line flag.
-#
-if ($nickname) {
-    # Generate the autoresult
-    $autoresult = "$tpoints|$total_c_points|$total_p_points|$tops";
-    foreach $name (sort {$puzzle_number{$a} <=> $puzzle_number{$b}} 
-	       keys %puzzle_number) {
-	$autoresult .= " |$name:$puzzle_c_points{$name}:$puzzle_c_rating{$name}:$puzzle_p_points{$name}:$puzzle_p_ops{$name}";
-    }
 
-    # Post the autoresult to the server. The Linux login id is
-    # concatenated with the user-supplied nickname for some (very) loose
-    # authentication of submissions.
-    &Driverlib::driver_post("$login:$nickname", $autoresult, $autograded);
-}
-
-# Clean up and exit
-clean ($tmpdir);
-exit;
-
-##################
-# Helper functions
-#
-
-#
-# check_nickname - Check a nickname for legality
-#
-sub check_nickname {
-    my $nickname = shift;
-
-    # Nicknames can't be empty
-    if (length($nickname) < 1) {
-        die "$0: Error: Empty nickname.\n";
-    }
-
-    # Nicknames can't be too long
-    if (length($nickname) > 35) {
-        die "$0: Error: Nickname exceeds 35 characters.\n";
-    }
-
-    # Nicknames can have restricted set of metacharacters (e.g., no #
-    # HTML tags)
-    if (!($nickname =~ /^[_-\w.,'@ ]+$/)) {
-        die "$0: Error: Illegal character in nickname. Only alphanumerics, apostrophes, commas, periods, dashes, underscores, and ampersands are allowed.\n";
-    }
-
-    # Nicknames can't be all whitespace
-    if ($nickname =~ /^\s*$/) {
-        die "$0: Error: Nickname is all whitespace.\n";
-    }
-
-}
-    
 #
 # clean - remove the scratch directory
 #

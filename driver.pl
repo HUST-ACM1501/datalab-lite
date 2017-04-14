@@ -151,7 +151,7 @@ unless (chdir($tmpdir)) {
 print "1. Running './dlc -z' to identify coding rules violations.\n";
 system("cp bits.c save-bits.c") == 0
     or die "$0: ERROR: Could not create backup copy of bits.c. $diemsg\n";
-system("./dlc -z -o zap-bits.c bits.c") == 0
+system("./dlc -z -o zap-bits.c bits.c -nostdinc") == 0
     or die "$0: ERROR: zapped bits.c did not compile. $diemsg\n";
 
 #
@@ -184,7 +184,7 @@ else {
 # Run dlc to identify operator count violations.
 # 
 print "\n3. Running './dlc -Z' to identify operator count violations.\n";
-system("./dlc -Z -o Zap-bits.c save-bits.c") == 0
+system("./dlc -Z -o Zap-bits.c save-bits.c -nostdinc") == 0
     or die "$0: ERROR: dlc unable to generated Zapped bits.c file.\n";
 
 #

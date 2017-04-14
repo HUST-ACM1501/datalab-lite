@@ -1,7 +1,6 @@
 ***********************
 The CS:APP Data Lab
-FluorineDog's Selection
-Directions 
+Lite Directions 
 ***********************
 
 0. Your goal is to modify your copy of bits.c so that it passes all the
@@ -22,7 +21,7 @@ tests without violating any of the coding guidelines.
             and RESULT_STANDARD is the correct one.
         iv. if there's no bug in your implementation, 
                 then you may see ERROR of the NEXT function. JUST KEEP GOING!
-    d. if all is done, feel free to try ./finalreport. 
+    d. if all is done, feel free to try ./finalreport
         Final report tests your implementation exhaustively, rather than using only a number of test cases.
 	If check fails to spot your bug that finalreport finds, run ./strictcheck to see a counterexample.
     e. there are 2 (useless) helper functions. refer to original-README for details.
